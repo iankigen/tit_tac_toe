@@ -1,6 +1,7 @@
 require 'set'
 class Game
   attr_accessor :grid, :positions, :player_1, :player_2
+
   def initialize
     @grid = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
     @positions = %w[1 2 3 4 5 6 7 8 9]
@@ -55,6 +56,7 @@ class Game
   end
 
   def determine_winner
+    winner = nil
     winning_positions = {
       a: [0, 1, 2],
       b: [3, 4, 5],
@@ -67,9 +69,15 @@ class Game
     }
 
     winning_positions.each do |_key, val|
-      exit_game('PLAYER 1 WON') if val.to_set.subset? @player_1.to_set
-      exit_game('PLAYER 2 WON') if val.to_set.subset? @player_2.to_set
+      if val.to_set.subset? @player_1.to_set
+        exit_game('PLAYER 1 WON')
+        winner = '1'
+      elsif val.to_set.subset? @player_2.to_set
+        exit_game('PLAYER 2 WON')
+        winner = '2'
+      end
     end
+    winner
   end
 
   def play
@@ -111,7 +119,7 @@ class Game
   def exit_game(msg = nil)
     puts msg if msg
     puts '===== TICTACTOE v1.0 ====='
-    exit
+    true
   end
 end
 
